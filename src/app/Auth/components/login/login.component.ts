@@ -25,7 +25,7 @@ import { LoginResponseModel } from '../../models/login-response.model';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent{
+export class LoginComponent {
   hide = true;
   email: string = '';
   password: string = '';
@@ -33,13 +33,11 @@ export class LoginComponent{
   constructor(private authService: AuthService) {}
 
   onLogin() {
-    this.authService.login({email: this.email, password: this.password}).subscribe({
-      next: (res: LoginResponseModel)=>{
-
-      },
-      error: (err)=>{
-        
-      }
-    });
+    this.authService
+      .login({ email: this.email, password: this.password })
+      .subscribe({
+        next: (res: LoginResponseModel) => {},
+        error: (err) => {},
+      });
   }
 }

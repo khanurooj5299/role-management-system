@@ -1,0 +1,9 @@
+mat-card {
+  color: red;
+  max-width: 400px;
+  width: 100%;
+  min-height: 300px;
+  white-space: pre-line;
+  font-weight: 500;
+  color: rgb(186, 0, 92);
+}

@@ -20,8 +20,8 @@ export default function networkErrorInterceptor(
       if (err instanceof HttpErrorResponse && err.status == 0) {
         router.navigate(['error'], {
           state: {
-            errorMessage: "Network Error!"
-          }
+            errorMessage: 'Network Error!\nPlease try again later.',
+          },
         });
         //return an observable that does nothing
         return new Observable<HttpEvent<unknown>>();
