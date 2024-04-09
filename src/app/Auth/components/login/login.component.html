@@ -1,8 +1,58 @@
-<div class="card">
-  <div class="card-body">
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="Johndoe@somedomian.com" />
-    </mat-form-field>
-  </div>
+<div class="container h-100 d-flex justify-content-center align-items-center">
+  <mat-card>
+    <mat-card-header class="pb-2">
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content class="mt-2">
+      <form
+        class="d-flex flex-column gap-2"
+        (ngSubmit)="onLogin()"
+        #loginform="ngForm"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            placeholder="Johndoe@somedomian.com"
+            required
+            email
+            [(ngModel)]="email"
+            #emailInput="ngModel"
+            name="email"
+          />
+          <mat-error *ngIf="emailInput.errors?.['required'] && emailInput.invalid && emailInput.touched">This field is required</mat-error>
+          <mat-error *ngIf="emailInput.errors?.['email'] && emailInput.invalid && emailInput.touched">Enter a valid email</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            required
+            [(ngModel)]="password"
+            #passwordInput="ngModel"
+            name="password"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">This field is required</mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loginform.invalid"
+        >
+          Login
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
