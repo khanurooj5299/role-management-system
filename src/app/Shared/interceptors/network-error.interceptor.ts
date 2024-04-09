@@ -18,7 +18,11 @@ export default function networkErrorInterceptor(
     catchError((err: HttpErrorResponse) => {
       //for network error route to error page
       if (err instanceof HttpErrorResponse && err.status == 0) {
-        router.navigate(['/error']);
+        router.navigate(['error'], {
+          state: {
+            errorMessage: "Network Error!"
+          }
+        });
         //return an observable that does nothing
         return new Observable<HttpEvent<unknown>>();
       }
