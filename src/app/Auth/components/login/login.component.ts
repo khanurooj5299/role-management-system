@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { LoginResponseModel } from '../../models/login-response.model';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +31,8 @@ export class LoginComponent {
   hide = true;
   email: string = '';
   password: string = '';
+  errorMessage = '';
+  @ViewChild('loginForm') loginForm?: NgForm;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -46,8 +49,21 @@ export class LoginComponent {
           this.authService.setUserAndToken(res);
           this.router.navigate(['admin/dashboard']);
         },
-        error: (err) => {
-          
+        error: (err: HttpErrorResponse) => {
+          //if invalid email/password show error message on same page
+          if(err.status == 401) {
+            this.errorMessage = err.error;
+            //clear out the form to give user another chance
+            this.loginForm?.resetForm();
+          } 
+          //else if other error like internal server error then go to error page
+          else {
+            this.router.navigate(['error'], {
+              state: {
+                errorMessage: err.error
+              }
+            })
+          }
         },
       });
   }
