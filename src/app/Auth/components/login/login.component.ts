@@ -47,22 +47,25 @@ export class LoginComponent {
           logged in indefinitely even when browser is closed because right now backend does not set
           an expiration date on the token. Change this later*/
           this.authService.setUserAndToken(res);
-          this.router.navigate(['admin/dashboard']);
+          //handle admin role for now
+          if (res.user.role == 'super-admin' || res.user.role == 'admin') {
+            this.router.navigate(['admin/dashboard']);
+          }
         },
         error: (err: HttpErrorResponse) => {
           //if invalid email/password show error message on same page
-          if(err.status == 401) {
+          if (err.status == 401) {
             this.errorMessage = err.error;
             //clear out the form to give user another chance
             this.loginForm?.resetForm();
-          } 
+          }
           //else if other error like internal server error then go to error page
           else {
             this.router.navigate(['error'], {
               state: {
-                errorMessage: err.error
-              }
-            })
+                errorMessage: err.error,
+              },
+            });
           }
         },
       });
