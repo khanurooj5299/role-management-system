@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../../environments/environment.development';
 
-import { LoginRequestModel } from './models/login-request.model';
-import { LoginResponseModel } from './models/login-response.model';
+import { LoginRequestModel } from '../models/login-request.model';
+import { LoginResponseModel } from '../models/login-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
