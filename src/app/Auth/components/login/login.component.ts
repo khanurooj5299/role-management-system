@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { LoginResponseModel } from '../../models/login-response.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -30,14 +31,24 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
     this.authService
       .login({ email: this.email, password: this.password })
       .subscribe({
-        next: (res: LoginResponseModel) => {},
-        error: (err) => {},
+        next: (res: LoginResponseModel) => {
+          /*on successful login user data and token is stored in local storage
+          Decided against storing in code memory because if user is logged in and refreshes the page
+          code memory is wiped and user will have to login again. In this implementation user is
+          logged in indefinitely even when browser is closed because right now backend does not set
+          an expiration date on the token. Change this later*/
+          this.authService.setUserAndToken(res);
+          this.router.navigate(['admin/dashboard']);
+        },
+        error: (err) => {
+          
+        },
       });
   }
 }

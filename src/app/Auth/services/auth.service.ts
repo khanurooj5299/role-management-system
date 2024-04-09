@@ -14,4 +14,9 @@ export class AuthService {
   login(authModel: LoginRequestModel) {
     return this.http.post<LoginResponseModel>(`${this.apiUrl}/auth/login`, authModel);
   }
+
+  setUserAndToken(loginResponse: LoginResponseModel) {
+    localStorage.setItem('user', JSON.stringify(loginResponse.user));
+    localStorage.setItem('token', loginResponse.token);
+  }
 }
