@@ -20,6 +20,6 @@ export class UserManagementService {
   }
 
   addUser(user: CreateUserModel) {
-    return this.http.post(`${this.apiUrl}/admin/add-user`, user);
+    return this.http.post<{message: string}>(`${this.apiUrl}/admin/add-user`, user);
   }
 }
