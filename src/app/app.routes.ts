@@ -5,6 +5,7 @@ import { AdminDashboardComponent } from './Admin/components/admin-dashboard/admi
 import { AuthGuard } from './Auth/guards/auth.guard';
 import { AdminMainLayoutComponent } from './Admin/components/admin-main-layout/admin-main-layout.component';
 import { Roles } from './Shared/models/roles.enum';
+import { UserManagementComponent } from './Admin/components/user-management/user-management.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'user-management', component: UserManagementComponent },
     ],
   },
   { path: 'error', component: ErrorComponent },
