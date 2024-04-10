@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 import { LoginResponseModel } from '../../models/login-response.model';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Roles } from '../../../Shared/models/roles.enum';
+import { Roles } from '../../../Shared/models/roles';
 
 @Component({
   selector: 'app-login',

@@ -1,3 +1,81 @@
 <div class="container">
-{{user.firstName}}
+  <mat-card>
+    <mat-card-header class="fw-bold pb-2">{{
+      mode | titlecase
+    }}</mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content class="pt-2"
+      ><form [formGroup]="userForm" class="d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Firstname</mat-label>
+          <input matInput formControlName="firstName" />
+          <mat-error
+            *ngIf="formControls['firstName'].errors?.['required'] && formControls['firstName'].touched"
+            >This field is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Lastname</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error
+            *ngIf="formControls['lastName'].errors?.['required'] && formControls['lastName'].touched"
+            >This field is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error
+            *ngIf="formControls['email'].errors?.['required'] && formControls['email'].touched"
+            >This field is required</mat-error
+          >
+          <mat-error
+            *ngIf="formControls['email'].errors?.['email'] && formControls['email'].touched"
+            >Invalid email</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            @for (role of roles|keyvalue; track role.key) {
+            <mat-option [value]="role.value">{{
+              role.value | titlecase
+            }}</mat-option>
+            }
+          </mat-select>
+          <mat-error
+            *ngIf="formControls['role'].errors?.['required'] && formControls['role'].touched"
+            >This field is required</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="user && user.category">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category">
+            @for (category of categories|keyvalue; track category.key) {
+            <mat-option [value]="category.value">{{
+              category.value | titlecase
+            }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Created</mat-label>
+          <input matInput formControlName="created" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="user && user.lastUpdated">
+          <mat-label>Last Updated</mat-label>
+          <input matInput formControlName="lastUpdated" />
+        </mat-form-field>
+        <button
+          *ngIf="mode != 'view'"
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="userForm.invalid"
+        >
+          {{ mode == "add" ? "Add" : "Edit" }}
+        </button>
+      </form></mat-card-content
+    >
+  </mat-card>
 </div>

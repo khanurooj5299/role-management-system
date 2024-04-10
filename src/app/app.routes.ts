@@ -4,7 +4,7 @@ import { ErrorComponent } from './Shared/components/error/error.component';
 import { AdminDashboardComponent } from './Admin/components/admin-dashboard/admin-dashboard.component';
 import { AuthGuard } from './Auth/guards/auth.guard';
 import { AdminMainLayoutComponent } from './Admin/components/admin-main-layout/admin-main-layout.component';
-import { Roles } from './Shared/models/roles.enum';
+import { Roles } from './Shared/models/roles';
 import { UserManagementComponent } from './Admin/components/user-management/user-management.component';
 
 export const routes: Routes = [

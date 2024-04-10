@@ -8,7 +8,7 @@ import {
 import { AuthService } from '../services/auth.service';
 import { SnackbarService } from '../../Shared/services/snackbar.service';
 import { UserModel } from '../../Shared/models/user.model';
-import { Roles } from '../../Shared/models/roles.enum';
+import { Roles } from '../../Shared/models/roles';
 
 export const AuthGuard: CanActivateFn = (
   next: ActivatedRouteSnapshot,
