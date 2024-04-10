@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserModel } from '../../../Shared/models/user.model';
+import { UserManagementService } from '../../services/user-management.service';
 
 @Component({
   selector: 'app-user-management',
@@ -11,10 +13,13 @@ import { ActivatedRoute } from '@angular/router';
 //This component is used for Adding, Updating and Viewing User Details
 export class UserManagementComponent implements OnInit {
   mode = 'view';
-  constructor(private route: ActivatedRoute) {}
+  user!: UserModel;
+
+  constructor(private route: ActivatedRoute, private userManagementService: UserManagementService) {}
 
   ngOnInit(): void {
     const mode = this.route.snapshot.queryParams['mode'];
     this.mode = mode ? mode : this.mode;
+    this.user = this.userManagementService.getUser();
   }
 }

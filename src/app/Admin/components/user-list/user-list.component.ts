@@ -1,13 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { UserModel } from '../../../Shared/models/user.model';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faTrash, faUserEdit } from '@fortawesome/free-solid-svg-icons';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { Router, RouterModule } from '@angular/router';
+import { UserManagementService } from '../../services/user-management.service';
 
 @Component({
   selector: 'app-user-list',
@@ -18,6 +23,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
     MatTableModule,
     FontAwesomeModule,
     MatPaginatorModule,
+    RouterModule,
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
@@ -34,7 +40,11 @@ export class UserListComponent implements OnInit {
   dataSource = new MatTableDataSource<UserModel>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private router: Router,
+    private userManagementService: UserManagementService
+  ) {}
 
   ngOnInit(): void {
     this.getUserCount();
@@ -57,7 +67,7 @@ export class UserListComponent implements OnInit {
     this.adminService.getUsers(this.pageIndex, this.pageSize).subscribe({
       next: (res: UserModel[]) => {
         this.users = res;
-      }
+      },
     });
   }
 
@@ -65,5 +75,12 @@ export class UserListComponent implements OnInit {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getUsers();
+  }
+
+  onUserManage(mode: 'view' | 'edit', user: UserModel) {
+    this.userManagementService.setUser({...user});
+    this.router.navigate(['admin/user-management'], {
+      queryParams: { mode },
+    });
   }
 }
