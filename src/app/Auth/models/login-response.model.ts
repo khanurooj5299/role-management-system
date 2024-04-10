@@ -1,6 +1,6 @@
-import { User } from "../../Shared/models/user.model";
+import { UserModel } from "../../Shared/models/user.model";
 
 export interface LoginResponseModel {
-    user: User,
+    user: UserModel,
     token: string
 }

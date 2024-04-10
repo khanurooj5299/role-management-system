@@ -7,6 +7,8 @@ import {
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { SnackbarService } from '../../Shared/services/snackbar.service';
+import { UserModel } from '../../Shared/models/user.model';
+import { Roles } from '../../Shared/models/roles.enum';
 
 export const AuthGuard: CanActivateFn = (
   next: ActivatedRouteSnapshot,
@@ -29,12 +31,13 @@ export const AuthGuard: CanActivateFn = (
   const roles: string[] = next.data['roles'];
 
   if (token) {
-    //the roles check is added because for some routes only being is logged in might be enough and there might be no roles data set to check against
-    if (roles) {
-      let user = localStorage.getItem('user');
-      //maybe the user removed user from localstorage but token is still there. In that case we logout
-      if (user) {
-        const currentRole = JSON.parse(user).role;
+    let user = localStorage.getItem('user');
+    //maybe the user removed user from localstorage but token is still there. In that case we logout
+    if (user) {
+      const userObj: UserModel = JSON.parse(user);
+      //the roles check is added because for some routes only being logged in might be enough and there might be no roles data set to check against
+      if (roles) {
+        const currentRole = userObj.role;
         if (roles.includes(currentRole)) {
           return true;
         } else {
@@ -42,11 +45,19 @@ export const AuthGuard: CanActivateFn = (
           return false;
         }
       } else {
-        authService.logout();
-        return false;
+        //at this point the user is logged in so we add an extra check to see if navigation is for login page
+        if (state.url == '/auth/login') {
+          //handle cases for other users laters
+          if (userObj.role == Roles.Admin || userObj.role == Roles.Super_admin) {
+            router.navigate(['admin/dashboard']);
+          }
+        }
+        //else simply allow navigation
+        return true;
       }
     } else {
-      return true;
+      authService.logout();
+      return false;
     }
   } else {
     router.navigate(['auth/login']);

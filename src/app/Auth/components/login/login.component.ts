@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 import { LoginResponseModel } from '../../models/login-response.model';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Roles } from '../../../Shared/models/roles.enum';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +49,10 @@ export class LoginComponent {
           an expiration date on the token. Change this later*/
           this.authService.setUserAndToken(res);
           //handle admin role for now
-          if (res.user.role == 'super-admin' || res.user.role == 'admin') {
+          if (
+            res.user.role == Roles.Admin ||
+            res.user.role == Roles.Super_admin
+          ) {
             this.router.navigate(['admin/dashboard']);
           }
         },
