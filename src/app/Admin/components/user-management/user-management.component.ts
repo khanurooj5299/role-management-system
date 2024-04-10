@@ -41,7 +41,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 //This component is used for Adding, Updating and Viewing User Details
 export class UserManagementComponent implements OnInit {
   mode = 'view';
-  user!: UserModel;
+  user!: UserModel | null; //can be null if user refereshes page
   userForm: FormGroup = new FormGroup({
     firstName: new FormControl(null, [Validators.required]),
     lastName: new FormControl(null, [Validators.required]),
@@ -70,8 +70,12 @@ export class UserManagementComponent implements OnInit {
     this.mode = mode ? mode : this.mode;
     if (this.mode == 'view' || this.mode == 'edit') {
       this.user = this.userManagementService.getUser();
-      this.userForm.patchValue(this.user);
-      this.userForm.controls['email'].disable();
+      if (this.user) {
+        this.userForm.patchValue(this.user);
+        this.userForm.controls['email'].disable();
+      } else {
+        this.router.navigate(['admin/dashboard']);
+      }
     } else {
     }
   }
@@ -91,7 +95,7 @@ export class UserManagementComponent implements OnInit {
       );
     } else {
       //in case of edit _id also needs to be sent
-      arg = { ...this.userForm.value, _id: this.user._id };
+      arg = { ...this.userForm.value, _id: this.user?._id };
       methodToCall = this.userManagementService.editUser.bind(
         this.userManagementService
       );
