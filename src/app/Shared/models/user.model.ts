@@ -6,4 +6,5 @@ export interface UserModel {
     category?: string,
     created: Date
     lastUpdated?: Date
+    _id: string
 }

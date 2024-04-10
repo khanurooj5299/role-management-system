@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserModel } from '../../../Shared/models/user.model';
 import { UserManagementService } from '../../services/user-management.service';
 import {
@@ -61,7 +61,8 @@ export class UserManagementComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private userManagementService: UserManagementService,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -80,17 +81,35 @@ export class UserManagementComponent implements OnInit {
   }
 
   onSubmit(form: FormGroupDirective) {
+    let methodToCall;
+    let arg;
+    //calling bind is important otherwise ref to this will be lost inside the service method
     if (this.mode == 'add') {
-      this.userManagementService.addUser(this.userForm.value).subscribe({
-        next: (res) => {
-          this.snackbarService.show('right', 'top', res.message);
+      arg = this.userForm.value;
+      methodToCall = this.userManagementService.addUser.bind(
+        this.userManagementService
+      );
+    } else {
+      //in case of edit _id also needs to be sent
+      arg = { ...this.userForm.value, _id: this.user._id };
+      methodToCall = this.userManagementService.editUser.bind(
+        this.userManagementService
+      );
+    }
+
+    methodToCall(arg).subscribe({
+      next: (res) => {
+        this.snackbarService.show('right', 'top', res.message);
+        if (this.mode == 'add') {
           this.userForm.reset();
           form.resetForm();
-        },
-        error: (err: HttpErrorResponse) => {
-          this.snackbarService.show('right', 'top', err.error);
-        },
-      });
-    }
+        } else {
+          this.router.navigate(['admin/dashboard']);
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this.snackbarService.show('right', 'top', err.error);
+      },
+    });
   }
 }

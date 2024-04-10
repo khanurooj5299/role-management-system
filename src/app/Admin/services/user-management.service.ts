@@ -22,4 +22,9 @@ export class UserManagementService {
   addUser(user: CreateUserModel) {
     return this.http.post<{message: string}>(`${this.apiUrl}/admin/add-user`, user);
   }
+
+  editUser(user: UserModel) {
+    console.log(user)
+    return this.http.put<{message: string}>(`${this.apiUrl}/admin/edit-user`, user);
+  }
 }
