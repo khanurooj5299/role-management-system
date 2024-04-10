@@ -56,8 +56,7 @@ export class LoginComponent {
           //if invalid email/password show error message on same page
           if (err.status == 401) {
             this.errorMessage = err.error;
-            //clear out the form to give user another chance
-            this.loginForm?.resetForm();
+            //we dont clear out the form on error becuase the user might want to check what mistake is being made
           }
           //else if other error like internal server error then go to error page
           else {
