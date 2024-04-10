@@ -5,7 +5,7 @@
     }}</mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="pt-2"
-      ><form [formGroup]="userForm" class="d-flex flex-column" (ngSubmit)="onSubmit()">
+      ><form [formGroup]="userForm" class="d-flex flex-column" (ngSubmit)="onSubmit(form)" #form="ngForm">
         <mat-form-field appearance="outline">
           <mat-label>Firstname</mat-label>
           <input matInput formControlName="firstName" />
@@ -48,7 +48,7 @@
             >This field is required</mat-error
           >
         </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="user && user.category">
+        <mat-form-field appearance="outline">
           <mat-label>Category</mat-label>
           <mat-select formControlName="category">
             @for (category of categories|keyvalue; track category.key) {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserModel } from '../../../Shared/models/user.model';
 import { UserManagementService } from '../../services/user-management.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,6 +12,7 @@ import { TitleCasePipe, KeyValuePipe, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { SnackbarService } from '../../../Shared/services/snackbar.service';
 
 @Component({
   selector: 'app-user-management',
@@ -56,7 +57,8 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private userManagementService: UserManagementService
+    private userManagementService: UserManagementService,
+    private snackbarService: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +77,15 @@ export class UserManagementComponent implements OnInit {
     return this.userForm.controls;
   }
 
-  onSubmit() {
-    console.log(this.userForm.value)
+  onSubmit(form: FormGroupDirective) {
+    if(this.mode=="add") {
+      this.userManagementService.addUser(this.userForm.value).subscribe({
+        next: (res: any)=>{
+          this.snackbarService.show('right', 'top', res.message);
+          this.userForm.reset();
+          form.resetForm();
+        }
+      });
+    }
   }
 }

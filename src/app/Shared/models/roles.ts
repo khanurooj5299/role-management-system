@@ -1,4 +1,5 @@
 export const Roles = {
     Admin: "admin",
-    Super_admin: "super-admin"
+    Super_admin: "super-admin",
+    Manager: "manager"
 }

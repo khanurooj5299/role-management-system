@@ -1,4 +1,4 @@
 export const Categories = {
-    Manager: "manager",
+    Finance: "finance",
     HR: "hr"
 }
