@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { UserModel } from '../../Shared/models/user.model';
 
-
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   private apiUrl = environment.apiUrl;
@@ -23,6 +22,12 @@ export class AdminService {
   getUserCount() {
     return this.http.get<{ count: number }>(
       `${this.apiUrl}/admin/get-user-count`
+    );
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrl}/admin/delete-user/${id}`
     );
   }
 }

@@ -34,7 +34,7 @@
               [icon]="faUserEdit"
               (click)="onUserManage('edit', user)"
             ></fa-icon>
-            <fa-icon [icon]="faTrash"></fa-icon>
+            <fa-icon [icon]="faTrash" (click)="onDelete(user._id)"></fa-icon>
           </div>
         </td>
       </ng-container>

@@ -83,4 +83,8 @@ export class UserListComponent implements OnInit {
       queryParams: { mode },
     });
   }
+
+  onDelete(id: string) {
+    
+  }
 }
