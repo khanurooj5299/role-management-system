@@ -38,7 +38,7 @@ export class UserManagementComponent implements OnInit {
   userForm: FormGroup = new FormGroup({
     firstName: new FormControl(null, [Validators.required]),
     lastName: new FormControl(null, [Validators.required]),
-    email: new FormControl({ value: null, disabled: true }, [
+    email: new FormControl(null, [
       Validators.required,
       Validators.email,
     ]),
@@ -65,10 +65,17 @@ export class UserManagementComponent implements OnInit {
     if (this.mode == 'view' || this.mode == 'edit') {
       this.user = this.userManagementService.getUser();
       this.userForm.patchValue(this.user);
+      this.userForm.controls['email'].disable();
+    } else {
+      
     }
   }
 
   get formControls() {
     return this.userForm.controls;
+  }
+
+  onSubmit() {
+    console.log(this.userForm.value)
   }
 }
