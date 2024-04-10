@@ -5,11 +5,12 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import networkErrorInterceptor from './Shared/interceptors/network-error.interceptor';
+import tokenInterceptor from './Auth/interceptors/token.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([networkErrorInterceptor])),
+    provideHttpClient(withInterceptors([networkErrorInterceptor, tokenInterceptor])),
   ],
 };

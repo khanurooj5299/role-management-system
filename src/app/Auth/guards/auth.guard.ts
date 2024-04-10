@@ -48,7 +48,10 @@ export const AuthGuard: CanActivateFn = (
         //at this point the user is logged in so we add an extra check to see if navigation is for login page
         if (state.url == '/auth/login') {
           //handle cases for other users laters
-          if (userObj.role == Roles.Admin || userObj.role == Roles.Super_admin) {
+          if (
+            userObj.role == Roles.Admin ||
+            userObj.role == Roles.Super_admin
+          ) {
             router.navigate(['admin/dashboard']);
           }
         }
@@ -60,8 +63,14 @@ export const AuthGuard: CanActivateFn = (
       return false;
     }
   } else {
-    router.navigate(['auth/login']);
-    snackbarservice.show('center', 'top', 'You need to login first');
-    return false;
+    if (state.url !== '/auth/login') {
+      router.navigate(['auth/login']);
+      snackbarservice.show('center', 'top', 'You need to login first');
+      return false;
+    }
+    //user is visiting the login page
+    else {
+      return true;
+    }
   }
 };
