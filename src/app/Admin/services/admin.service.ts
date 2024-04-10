@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../../environments/environment.development';
@@ -10,7 +10,18 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers() {
-    return this.http.get<UserModel[]>(`${this.apiUrl}/admin/get-users`);
+  getUsers(pageIndex: number, pageSize: number) {
+    const params = new HttpParams()
+      .set('pageIndex', pageIndex)
+      .set('pageSize', pageSize);
+    return this.http.get<UserModel[]>(`${this.apiUrl}/admin/get-users`, {
+      params,
+    });
+  }
+
+  getUserCount() {
+    return this.http.get<{ count: number }>(
+      `${this.apiUrl}/admin/get-user-count`
+    );
   }
 }
