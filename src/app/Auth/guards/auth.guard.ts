@@ -23,9 +23,31 @@ export const AuthGuard: CanActivateFn = (
   backend won't work because token is not valid
   */
   const token = authService.getToken();
+  /*getting the allowed roles for the navigated route set by route object. Again in this implementation as well a user might be able to 
+  bypass this guard by changing the role in localStorage. Cross-checking with backend is an option but expensive and not really necessary
+  since the backend handles proper role checking based on JWT token*/
+  const roles: string[] = next.data['roles'];
 
   if (token) {
-    return true;
+    //the roles check is added because for some routes only being is logged in might be enough and there might be no roles data set to check against
+    if (roles) {
+      let user = localStorage.getItem('user');
+      //maybe the user removed user from localstorage but token is still there. In that case we logout
+      if (user) {
+        const currentRole = JSON.parse(user).role;
+        if (roles.includes(currentRole)) {
+          return true;
+        } else {
+          snackbarservice.show('center', 'top', 'Access denied');
+          return false;
+        }
+      } else {
+        authService.logout();
+        return false;
+      }
+    } else {
+      return true;
+    }
   } else {
     router.navigate(['auth/login']);
     snackbarservice.show('center', 'top', 'You need to login first');
