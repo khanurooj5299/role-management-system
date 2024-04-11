@@ -16,3 +16,7 @@ table {
         overflow-x: scroll;
     }
 }
+
+mat-card {
+    max-width: 1200px;
+}

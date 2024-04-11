@@ -1,1 +1,5 @@
-<p>confirm-dialog works!</p>
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+  <button mat-stroked-button color="warn" [mat-dialog-close]="true" cdkFocusInitial>Yes</button>
+</mat-dialog-actions>
