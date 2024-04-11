@@ -104,24 +104,21 @@ export class UserListComponent implements OnInit {
   }
 
   onDelete(id: string, rowIndex: number) {
-    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    //   data: 'Are you sure you want to delete this user?',
-    // });
-    // dialogRef.afterClosed().subscribe((confirmed) => {
-    //   if (confirmed) {
-    //     this.adminService.deleteUser(id).subscribe({
-    //       next: (res) => {
-    //         this.snackbarService.show('right', 'top', res.message);
-    //         //we dont fetch data from backend again but update the frontend state only
-    //         this.totalUserCount--;
-    //         this.dataSource = new MatTableDataSource(this.dataSource.data.splice(rowIndex, 1));
-    //         this.dataSource.paginator = this.paginator;
-    //       },
-    //       error: (err: HttpErrorResponse) => {
-    //         this.snackbarService.show('center', 'top', err.error);
-    //       },
-    //     });
-    //   }
-    // });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: 'Are you sure you want to delete this user?',
+    });
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.adminService.deleteUser(id).subscribe({
+          next: (res) => {
+            this.snackbarService.show('right', 'top', res.message);
+            this.getUsers();
+          },
+          error: (err: HttpErrorResponse) => {
+            this.snackbarService.show('center', 'top', err.error);
+          },
+        });
+      }
+    });
   }
 }
